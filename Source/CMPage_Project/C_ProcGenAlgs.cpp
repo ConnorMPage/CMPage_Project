@@ -15,7 +15,7 @@ std::vector<TArray<TArray<AC_DungeonTile*>>> UC_ProcGenAlgs::binarySpacePartitio
 	
 	while (roomsQueue.size() > 0) 
 	{
-		
+	
 	
 		TArray<TArray<AC_DungeonTile*>> room = roomsQueue[0];
 		roomsQueue.pop_front();
@@ -24,13 +24,14 @@ std::vector<TArray<TArray<AC_DungeonTile*>>> UC_ProcGenAlgs::binarySpacePartitio
 			
 			if (rand()%10 >5) 
 			{
+				UE_LOG(LogTemp, Warning, TEXT("test2"));
 				if (room[0].Num() >= minHeight * 2) 
 				{
-					splitGridYaxis(minWidth,minHeight,roomsQueue,room);
+					splitGridYaxis(minWidth,roomsQueue,room);
 				}
 				else if (room.Num() >= minWidth * 2)
 				{
-					splitGridXaxis(minWidth, minHeight, roomsQueue, room);
+					splitGridXaxis(minHeight, roomsQueue, room);
 				}
 				else if (room.Num() >= minWidth && room[0].Num() >= minHeight)
 				{
@@ -41,11 +42,11 @@ std::vector<TArray<TArray<AC_DungeonTile*>>> UC_ProcGenAlgs::binarySpacePartitio
 			{
 				if (room.Num() >= minWidth * 2)
 				{
-					splitGridXaxis(minWidth, minHeight, roomsQueue, room);
+					splitGridXaxis(minHeight, roomsQueue, room);
 				}
 				else if (room[0].Num() >= minHeight * 2)
 				{
-					splitGridYaxis(minWidth, minHeight, roomsQueue, room);
+					splitGridYaxis(minWidth, roomsQueue, room);
 				}
 				else if (room.Num() >= minWidth && room[0].Num() >= minHeight)
 				{
@@ -58,12 +59,13 @@ std::vector<TArray<TArray<AC_DungeonTile*>>> UC_ProcGenAlgs::binarySpacePartitio
 	return std::vector<TArray<TArray<AC_DungeonTile*>>>();
 }
 
-void UC_ProcGenAlgs::splitGridXaxis(int32 minWidth, int32 minHeight, std::deque<TArray<TArray<AC_DungeonTile*>>> roomQueue, TArray<TArray<AC_DungeonTile*>> room)
+void UC_ProcGenAlgs::splitGridXaxis(int32 minHeight, std::deque<TArray<TArray<AC_DungeonTile*>>> roomQueue, TArray<TArray<AC_DungeonTile*>> room)
 {
 
 }
 
-void UC_ProcGenAlgs::splitGridYaxis(int32 minWidth, int32 minHeight, std::deque<TArray<TArray<AC_DungeonTile*>>> roomQueue, TArray<TArray<AC_DungeonTile*>> room)
+void UC_ProcGenAlgs::splitGridYaxis(int32 minWidth, std::deque<TArray<TArray<AC_DungeonTile*>>> roomQueue, TArray<TArray<AC_DungeonTile*>> room)
 {
 
+	 
 }

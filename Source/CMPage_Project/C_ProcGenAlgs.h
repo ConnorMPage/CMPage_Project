@@ -20,6 +20,7 @@ class CMPAGE_PROJECT_API UC_ProcGenAlgs : public UObject
 public:
 	std::vector< TArray<TArray<AC_DungeonTile*>>> binarySpacePartitioning(TArray<TArray<AC_DungeonTile*>> fullGrid, int32 minWidth,int32 minHeight);
 private:
-	void splitGridXaxis(int32 minWidth, int32 minHeight, std::deque<TArray<TArray<AC_DungeonTile*>>> roomQueue, TArray<TArray<AC_DungeonTile*>> room);
-	void splitGridYaxis(int32 minWidth, int32 minHeight, std::deque<TArray<TArray<AC_DungeonTile*>>> roomQueue, TArray<TArray<AC_DungeonTile*>> room);
+	void splitGridXaxis(int32 minHeight, std::deque<TArray<TArray<AC_DungeonTile*>>> roomQueue, TArray<TArray<AC_DungeonTile*>> room);
+	void splitGridYaxis(int32 minWidth, std::deque<TArray<TArray<AC_DungeonTile*>>> roomQueue, TArray<TArray<AC_DungeonTile*>> room);
+	int offset = 1;
 };
