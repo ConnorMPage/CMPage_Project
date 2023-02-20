@@ -54,4 +54,8 @@ private:
 		void LookUp(float AxisAmount);//looking up and down
 	UFUNCTION()
 		void Turn(float AxisAmount);//rotating to the left and right
+	UFUNCTION()
+		void StartCrouch();
+	UFUNCTION()
+		void EndCrouch();
 };

@@ -44,6 +44,9 @@ void AC_PlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &AC_PlayerCharacter::LookUp);
 	PlayerInputComponent->BindAxis(TEXT("Turn"), this, &AC_PlayerCharacter::Turn);
 	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &AC_PlayerCharacter::Jump);
+	PlayerInputComponent->BindAction(TEXT("Crouch"), IE_Pressed, this, &AC_PlayerCharacter::StartCrouch);
+	PlayerInputComponent->BindAction(TEXT("Crouch"), IE_Released, this, &AC_PlayerCharacter::EndCrouch);
+
 }
 
 void AC_PlayerCharacter::ForwardMovement(float AxisAmount)
@@ -64,5 +67,15 @@ void AC_PlayerCharacter::LookUp(float AxisAmount)
 void AC_PlayerCharacter::Turn(float AxisAmount)
 {
 	AddControllerYawInput(AxisAmount);
+}
+
+void AC_PlayerCharacter::StartCrouch()
+{
+	AC_PlayerCharacter::Crouch();
+}
+
+void AC_PlayerCharacter::EndCrouch()
+{
+	AC_PlayerCharacter::UnCrouch();
 }
 
