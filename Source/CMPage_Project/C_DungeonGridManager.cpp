@@ -34,6 +34,7 @@ void AC_DungeonGridManager::Tick(float DeltaTime)
 void AC_DungeonGridManager::constructGrid()
 {
 	std::vector<TArray<TArray<AC_DungeonTile*>>> test = procGenRefs->binarySpacePartitioning(DungeonGrid, 5, 5);
+
 	for (int x = 0; x < DungeonSize; x++)
 	
 	{

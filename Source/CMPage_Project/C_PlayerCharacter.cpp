@@ -39,6 +39,7 @@ void AC_PlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	// movement
 	PlayerInputComponent->BindAxis(TEXT("ForwardMovement"), this, &AC_PlayerCharacter::ForwardMovement);
 	PlayerInputComponent->BindAxis(TEXT("Strafe"), this, &AC_PlayerCharacter::Strafe);
 	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &AC_PlayerCharacter::LookUp);
@@ -47,8 +48,16 @@ void AC_PlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	PlayerInputComponent->BindAction(TEXT("Crouch"), IE_Pressed, this, &AC_PlayerCharacter::StartCrouch);
 	PlayerInputComponent->BindAction(TEXT("Crouch"), IE_Released, this, &AC_PlayerCharacter::EndCrouch);
 
+
+//attacks
+	PlayerInputComponent->BindAction(TEXT("Attack"), IE_Pressed, this, &AC_PlayerCharacter::OnFire);
+	PlayerInputComponent->BindAction(TEXT("SpecialAttack"), IE_Pressed, this, &AC_PlayerCharacter::OnFire);
+	PlayerInputComponent->BindAction(TEXT("Attack"), IE_Released, this, &AC_PlayerCharacter::BasicAttack);
+	PlayerInputComponent->BindAction(TEXT("SpecialAttack"), IE_Released, this, &AC_PlayerCharacter::SpecialAttack);
 }
 
+
+// Player Movement
 void AC_PlayerCharacter::ForwardMovement(float AxisAmount)
 {
 	AddMovementInput(GetActorForwardVector() * AxisAmount);
@@ -77,5 +86,39 @@ void AC_PlayerCharacter::StartCrouch()
 void AC_PlayerCharacter::EndCrouch()
 {
 	AC_PlayerCharacter::UnCrouch();
+}
+
+void AC_PlayerCharacter::OnFire()
+{
+}
+
+void AC_PlayerCharacter::BasicAttack()
+{
+	FVector CamLocation;//camera location
+	FRotator CamRotation;//camera rotation
+	AController* ControllerRef = GetController();//gets the controller
+	ControllerRef->GetPlayerViewPoint(CamLocation, CamRotation);//uses the location and rotation to get the cameras viewpoint 
+	FVector End = CamLocation + CamRotation.Vector() * CastRange;// gets the end point for a raytrace
+	FHitResult Hit;
+	bool bTargetHit = GetWorld()->LineTraceSingleByChannel(Hit, CamLocation, End, ECC_Visibility);//fires raytrace
+	if (bTargetHit)//if a target is hit
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Uses Basic Attack on: %s"), *Hit.GetActor()->GetName());//outputs the name of object hit by raytrace
+	}
+}
+
+void AC_PlayerCharacter::SpecialAttack()
+{
+	FVector CamLocation;//camera location
+	FRotator CamRotation;//camera rotation
+	AController* ControllerRef = GetController();//gets the controller
+	ControllerRef->GetPlayerViewPoint(CamLocation, CamRotation);//uses the location and rotation to get the cameras viewpoint 
+	FVector End = CamLocation + CamRotation.Vector() * CastRange;// gets the end point for a raytrace
+	FHitResult Hit;
+	bool bTargetHit = GetWorld()->LineTraceSingleByChannel(Hit, CamLocation, End, ECC_Visibility);//fires raytrace
+	if (bTargetHit)//if a target is hit
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Uses Special Attack on: %s"), *Hit.GetActor()->GetName());//outputs the name of object hit by raytrace
+	}
 }
 

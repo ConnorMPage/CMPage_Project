@@ -44,6 +44,9 @@ private:
 	UPROPERTY(VisibleAnywhere)
 		float PlayerCamArmLen = 200.0f;//Length of Springarm
 
+
+	UPROPERTY(EditAnywhere)
+		float CastRange = 5000.0f;
 	//functions for player movement 
 	//Movement functions
 	UFUNCTION()
@@ -58,4 +61,10 @@ private:
 		void StartCrouch();
 	UFUNCTION()
 		void EndCrouch();
+	UFUNCTION()
+		void OnFire();
+	UFUNCTION()
+		void BasicAttack();
+	UFUNCTION()
+		void SpecialAttack();
 };

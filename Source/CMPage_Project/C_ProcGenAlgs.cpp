@@ -66,6 +66,12 @@ void UC_ProcGenAlgs::splitGridXaxis(int32 minHeight, std::deque<TArray<TArray<AC
 
 void UC_ProcGenAlgs::splitGridYaxis(int32 minWidth, std::deque<TArray<TArray<AC_DungeonTile*>>> roomQueue, TArray<TArray<AC_DungeonTile*>> room)
 {
-
-	 
+	int32 ySplit = rand() % room[0].Num();
+	TArray<TArray<AC_DungeonTile*>> room1;
+	TArray<TArray<AC_DungeonTile*>> room2;
+	room1.SetNumZeroed(minWidth);
+	for (int i = 0; i < DungeonGrid.Num(); i++)
+	{
+		DungeonGrid[i].SetNumZeroed(DungeonSize);
+	}
 }
