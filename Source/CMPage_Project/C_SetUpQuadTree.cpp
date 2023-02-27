@@ -15,7 +15,7 @@ AC_SetUpQuadTree::AC_SetUpQuadTree()
 void AC_SetUpQuadTree::BeginPlay()
 {
 	Super::BeginPlay();
-	StartSetup();
+	//StartSetup();
 }
 
 // Called every frame
@@ -25,20 +25,20 @@ void AC_SetUpQuadTree::Tick(float DeltaTime)
 
 }
 
-void AC_SetUpQuadTree::StartSetup()
-{
+//void AC_SetUpQuadTree::StartSetup()
+//{
 
-}
+//}
 
-AC_SimpleBoundary* AC_SetUpQuadTree::NewQuadCell(FVector center, FVector Half, AC_SimpleBoundary* parentObj)
+/*AC_SimpleBoundary* AC_SetUpQuadTree::NewQuadCell(FVector center, FVector Half, AC_SimpleBoundary* parentObj)
 {
 	return nullptr;
 }
 
-/*std::tuple<int, int, float, float> AC_SetUpQuadTree::sliceRand(AC_SimpleBoundary* index)
+std::tuple<int, int, float, float> AC_SetUpQuadTree::sliceRand(AC_SimpleBoundary* index)
 {
 	return std::tuple<int, int, float, float>();
-}*/
+}
 
 std::vector<FVector> AC_SetUpQuadTree::Center(float sliceX, float sliceY, AC_SimpleBoundary* index)
 {
@@ -49,4 +49,4 @@ std::vector<FVector> AC_SetUpQuadTree::CellSize(float sliceX, float sliceY, AC_S
 {
 	return std::vector<FVector>();
 }
-
+*/

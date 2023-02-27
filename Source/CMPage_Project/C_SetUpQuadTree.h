@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "C_SimpleBoundary.h"
+//#include "C_SimpleBoundary.h"
 #include <vector>
 #include "GameFramework/Actor.h"
 
@@ -27,18 +27,19 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 private:
-	UPROPERTY()
-		AC_SimpleBoundary* AABB;
+	//UPROPERTY()
+		//AC_SimpleBoundary* AABB;
 	
-	
+	/*
 	UFUNCTION()
 		void StartSetup();
-	UFUNCTION()
-		AC_SimpleBoundary* NewQuadCell(FVector center, FVector Half, AC_SimpleBoundary* parentObj);
 	//UFUNCTION()
-	//	std::tuple <int, int, float, float> sliceRand(AC_SimpleBoundary* index);
+		//AC_SimpleBoundary* NewQuadCell(FVector center, FVector Half, AC_SimpleBoundary* parentObj);
+	UFUNCTION()
+		std::tuple <int, int, float, float> sliceRand(AC_SimpleBoundary* index);
 	UFUNCTION()
 		std::vector<FVector> CellSize(float sliceX, float sliceY, AC_SimpleBoundary* index);
 	UFUNCTION()
 		std::vector<FVector> Center(float sliceX, float sliceY, AC_SimpleBoundary* index);
+		*/
 };

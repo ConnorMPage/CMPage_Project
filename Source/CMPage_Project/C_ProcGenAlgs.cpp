@@ -70,8 +70,8 @@ void UC_ProcGenAlgs::splitGridYaxis(int32 minWidth, std::deque<TArray<TArray<AC_
 	TArray<TArray<AC_DungeonTile*>> room1;
 	TArray<TArray<AC_DungeonTile*>> room2;
 	room1.SetNumZeroed(minWidth);
-	for (int i = 0; i < DungeonGrid.Num(); i++)
-	{
-		DungeonGrid[i].SetNumZeroed(DungeonSize);
-	}
+	//for (int i = 0; i < DungeonGrid.Num(); i++)
+	//{
+	//	DungeonGrid[i].SetNumZeroed(DungeonSize);
+	//}
 }
