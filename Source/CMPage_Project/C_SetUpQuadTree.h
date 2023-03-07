@@ -3,12 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-//#include "C_SimpleBoundary.h"
+#include "C_QuadRooms.h"
 #include <vector>
+#include <tuple>
+#include "CMPage_ProjectGameModeBase.h"
 #include "GameFramework/Actor.h"
-
+#include "Kismet/GameplayStatics.h"
 #include "C_SetUpQuadTree.generated.h"
-
 
 UCLASS()
 class CMPAGE_PROJECT_API AC_SetUpQuadTree : public AActor
@@ -26,20 +27,61 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	UPROPERTY(EditAnywhere)
+		FVector mapDimensions = FVector(32.0f, 32.0f, 1.0f);
+	UPROPERTY(EditAnywhere)
+		int sliceRoomMinSize = 5;
+	UPROPERTY(EditAnywhere)
+		int tileSize = 100;
+	UPROPERTY(EditAnywhere)
+		float chanceToDropQuad = 0.0f;
+	UPROPERTY(EditAnywhere)
+		int roomWallBorder = 2;
+	UFUNCTION()
+		void generateQuads(AC_QuadRooms*& quadRoomIn);
 private:
-	//UPROPERTY()
-		//AC_SimpleBoundary* AABB;
-	
-	/*
+	UPROPERTY()
+		AC_QuadRooms* AABB;
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<AC_QuadRooms> quadRoomsSubClass;
+	UPROPERTY()
+		TArray<AC_QuadRooms*> QuadRoomArray;
+	UPROPERTY()
+		int slice_MaxTries = 25;
+	UPROPERTY()
+		int SliceTry = 0;
+	UPROPERTY()
+		bool sliceBreak = false;
+	UPROPERTY()
+		float sliceHorX = 0.0f;
+	UPROPERTY()
+		float sliceVerY = 0.0f;
+	UPROPERTY()
+		bool slices = false;
+	UPROPERTY()
+		AC_QuadRooms* currentQuadBounds;
+	UPROPERTY()
+		TArray<AC_QuadRooms*> justLeafNodes_QuadRoom;
+	UPROPERTY()
+		TArray<AC_QuadRooms*> justTrunkNodes_QuadRoom;
+	UPROPERTY()
+		int mainLoopI = 0;
+	UPROPERTY()
+		ACMPage_ProjectGameModeBase* gameModeRef;
+
+
+	//functions
 	UFUNCTION()
 		void StartSetup();
-	//UFUNCTION()
-		//AC_SimpleBoundary* NewQuadCell(FVector center, FVector Half, AC_SimpleBoundary* parentObj);
 	UFUNCTION()
-		std::tuple <int, int, float, float> sliceRand(AC_SimpleBoundary* index);
+		AC_QuadRooms* NewQuadCell(FVector center, FVector Half);
 	UFUNCTION()
-		std::vector<FVector> CellSize(float sliceX, float sliceY, AC_SimpleBoundary* index);
+		AC_QuadRooms* NewQuadCell2(FVector center, FVector Half, AC_QuadRooms* parentObj);
 	UFUNCTION()
-		std::vector<FVector> Center(float sliceX, float sliceY, AC_SimpleBoundary* index);
-		*/
+	void sliceRand(AC_QuadRooms* index,int& horSlice, int& verSlice,float& fHorSlice,float& fVerSlice);
+	UFUNCTION()
+		TArray<FVector> CellSize(float sliceX, float sliceY, AC_QuadRooms* index);
+	UFUNCTION()
+		TArray<FVector> Center(float sliceX, float sliceY, TArray<FVector> parentArray);
+		
 };
