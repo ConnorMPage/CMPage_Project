@@ -5,8 +5,7 @@
 #include "CoreMinimal.h"
 #include "C_QuadRooms.h"
 #include <vector>
-#include <tuple>
-#include "CMPage_ProjectGameModeBase.h"
+
 #include "GameFramework/Actor.h"
 #include "Kismet/GameplayStatics.h"
 #include "C_SetUpQuadTree.generated.h"
@@ -30,7 +29,7 @@ public:
 	UPROPERTY(EditAnywhere)
 		FVector mapDimensions = FVector(32.0f, 32.0f, 1.0f);
 	UPROPERTY(EditAnywhere)
-		int sliceRoomMinSize = 5;
+		int sliceRoomMinSize = 1;
 	UPROPERTY(EditAnywhere)
 		int tileSize = 100;
 	UPROPERTY(EditAnywhere)
@@ -38,7 +37,9 @@ public:
 	UPROPERTY(EditAnywhere)
 		int roomWallBorder = 2;
 	UFUNCTION()
-		void generateQuads(AC_QuadRooms*& quadRoomIn);
+		void generateQuads(AC_QuadRooms*& quadRoomIn, int mainInt);
+	UFUNCTION()
+		void StartSetup();
 private:
 	UPROPERTY()
 		AC_QuadRooms* AABB;
@@ -47,7 +48,7 @@ private:
 	UPROPERTY()
 		TArray<AC_QuadRooms*> QuadRoomArray;
 	UPROPERTY()
-		int slice_MaxTries = 25;
+		int slice_MaxTries = 1000;
 	UPROPERTY()
 		int SliceTry = 0;
 	UPROPERTY()
@@ -66,13 +67,12 @@ private:
 		TArray<AC_QuadRooms*> justTrunkNodes_QuadRoom;
 	UPROPERTY()
 		int mainLoopI = 0;
-	UPROPERTY()
-		ACMPage_ProjectGameModeBase* gameModeRef;
+	//UPROPERTY()
+		//ACMPage_ProjectGameModeBase* gameModeRef;
 
 
 	//functions
-	UFUNCTION()
-		void StartSetup();
+	
 	UFUNCTION()
 		AC_QuadRooms* NewQuadCell(FVector center, FVector Half);
 	UFUNCTION()

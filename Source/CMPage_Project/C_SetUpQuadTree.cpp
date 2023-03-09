@@ -8,7 +8,7 @@ AC_SetUpQuadTree::AC_SetUpQuadTree()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	gameModeRef = Cast<ACMPage_ProjectGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));// casts in the gameref so that the class can execute gamemode functions
+	//gameModeRef = Cast<ACMPage_ProjectGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));// casts in the gameref so that the class can execute gamemode functions
 }
 
 // Called when the game starts or when spawned
@@ -16,7 +16,6 @@ void AC_SetUpQuadTree::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	StartSetup();
 }
 
 // Called every frame
@@ -59,7 +58,7 @@ void AC_SetUpQuadTree::StartSetup()
 					}
 					else
 					{
-						generateQuads(currentQuadBounds);
+						generateQuads(currentQuadBounds, mainInd);
 						if (slices)break;
 					}
 				}
@@ -88,7 +87,7 @@ void AC_SetUpQuadTree::StartSetup()
 }
 
 
-void AC_SetUpQuadTree::generateQuads(AC_QuadRooms*& quadRoomIn)
+void AC_SetUpQuadTree::generateQuads(AC_QuadRooms*& quadRoomIn,int mainInt )
 {
 	slices = false;
 
@@ -106,10 +105,10 @@ void AC_SetUpQuadTree::generateQuads(AC_QuadRooms*& quadRoomIn)
 	quadRoomIn->BoundaryBounds(left, right, top, bottom);
 	float ifcriteria = (sliceRoomMinSize + roomWallBorder) * tileSize;
 	
-	if (abs(fHorSlice - left) > ifcriteria) {
-		if (abs(right - fHorSlice) > ifcriteria) {
-			if (abs(top - fVerSlice) > ifcriteria) {
-				if (abs(fVerSlice - bottom) > ifcriteria) {
+	if (abs(fHorSlice - left) >= ifcriteria) {
+		if (abs(right - fHorSlice) >= ifcriteria) {
+			if (abs(top - fVerSlice) >= ifcriteria) {
+				if (abs(fVerSlice - bottom) >= ifcriteria) {
 					sliceBreak = true;
 					slices = true;
 
@@ -120,8 +119,24 @@ void AC_SetUpQuadTree::generateQuads(AC_QuadRooms*& quadRoomIn)
 						
 						float halfX = quadRoomIn->half_x;
 						float halfY = quadRoomIn->half_y;
-						AC_QuadRooms* tempQuad = NewQuadCell2(FVector(centreArray[i].X - abs(halfX), centreArray[i].Y-abs(halfY), centreArray[i].Z), sizeArray[i], quadRoomIn);
-						tempQuad->K2_AttachRootComponentToActor(quadRoomIn);
+						AC_QuadRooms* tempQuad;
+						
+						if (mainInt == 0) {
+							tempQuad = NewQuadCell2(FVector(centreArray[i].X - abs(halfX), centreArray[i].Y - abs(halfY), centreArray[i].Z), sizeArray[i], quadRoomIn);
+							tempQuad->K2_AttachRootComponentToActor(quadRoomIn);
+							
+						}
+						else {
+						
+							sizeArray = CellSize(fHorSlice, fVerSlice, quadRoomIn);
+							centreArray = Center(fHorSlice, fVerSlice, sizeArray);
+							tempQuad = NewQuadCell2(FVector(centreArray[i].X - quadRoomIn->posDif.X, centreArray[i].Y - quadRoomIn->posDif.Y, centreArray[i].Z), sizeArray[i], quadRoomIn);
+							
+							
+							tempQuad->K2_AttachRootComponentToActor(quadRoomIn);
+							
+						}
+						tempQuad->posDif = tempQuad->GetActorLocation() - quadRoomIn->GetActorLocation();
 						quadRoomIn->childBoundaries.Add(quadRoomIn);
 					}
 					quadRoomIn->hasChild = true;

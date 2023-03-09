@@ -43,6 +43,9 @@ public:
 	UPROPERTY()
 		float half_y;
 	UPROPERTY()
+		FVector posDif;
+	
+	UPROPERTY()
 		AC_QuadRooms* parentobj;
 	UPROPERTY()
 		AC_QuadRooms* RealRoom;
