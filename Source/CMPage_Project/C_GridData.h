@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Components/StaticMeshComponent.h"
 #include "C_QuadRooms.h"
+#include "C_WallCollision.h"
 #include "C_SetUpQuadTree.h"
 #include "C_GridData.generated.h"
 
@@ -40,23 +41,23 @@ public:
 private:
 	//Meshes 
 	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent* pillarWallMesh;
+		UInstancedStaticMeshComponent* pillarWallMesh;
 	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent* capFIllerMesh;
+		UInstancedStaticMeshComponent* capFIllerMesh;
 	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent* cornerFillerMesh;
+		UInstancedStaticMeshComponent* cornerFillerMesh;
 	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent* groundFillerFullMesh;
+		UInstancedStaticMeshComponent* groundFillerFullMesh;
 	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent* capWallMesh;
+		UInstancedStaticMeshComponent* capWallMesh;
 	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent* insideCornerMesh;
+		UInstancedStaticMeshComponent* insideCornerMesh;
 	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent* outsideCornerMesh;
+		UInstancedStaticMeshComponent* outsideCornerMesh;
 	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent* wallMesh;
+		UInstancedStaticMeshComponent* wallMesh;
 	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent* floorMesh;
+		UInstancedStaticMeshComponent* floorMesh;
 	//functions
 	UFUNCTION()
 		void digRooms(AC_QuadRooms* quadRoomIn);
@@ -86,8 +87,10 @@ private:
 	UFUNCTION()
 		void safeArrayGetCheck(int X,int Y);
 
-	/*UFUNCTION()
-		void getArrayValueXYin(int X, int Y, TArray<void>& arrayIn, int indexOut);
+	UFUNCTION()
+		void getArrayValueXYinbool(int X, int Y, TArray<bool> arrayIn, int& indexOut, bool& value);
+	UFUNCTION()
+		void getArrayValueXYin(int X, int Y, TArray<int> arrayIn, int& indexOut,int& value);
 	UFUNCTION()
 		void getXYBaseOnIndex(int indexin, int XMax, int YMax, int& X, int& Y);
 	UFUNCTION()
@@ -97,6 +100,112 @@ private:
 	UFUNCTION()
 		bool floorOrCorridor(int in);
 	UFUNCTION()
-		bool emptyorOutside(int in);*/
-	
+		bool emptyorOutside(int in);
+	UFUNCTION()
+		bool wallOrEmptyOrOutside(int in);
+	UFUNCTION()
+		FTransform makeTileTransform();
+	UFUNCTION()
+		bool anyTile(int in);
+
+	//main Variables
+	UPROPERTY()
+		TArray<int> testArray;
+	UPROPERTY()
+		FTransform tempTransform;
+	UPROPERTY()
+		TArray<bool> tiles;
+	UPROPERTY()
+		TArray<int> tileType;
+	UPROPERTY()
+		int col1;
+	UPROPERTY()
+		int row1;
+	UPROPERTY()
+		int col2;
+	UPROPERTY()
+		int row2;
+	UPROPERTY()
+		int i_temp;
+	UPROPERTY()
+		int roomMaxSize = 32;
+	UPROPERTY()
+		AC_QuadRooms* closestReturn;
+	UPROPERTY()
+		AC_QuadRooms* quadHolding;
+	UPROPERTY()
+		TArray<AC_QuadRooms*> findNearestArray;
+	UPROPERTY()
+		TArray<AC_QuadRooms*> leafCopy;
+	UPROPERTY()
+		float d_temp;
+	UPROPERTY()
+		float newDist = 5000000.0f;
+	UPROPERTY()
+		bool isWall = false;
+	UPROPERTY()
+		int genWallOffset = 1;
+	UPROPERTY()
+		FTransform defaultTransform;
+	UPROPERTY()
+		TArray<int> finalTyleType;
+	UPROPERTY()
+		int localXIndex;
+	UPROPERTY()
+		int localYIndex;
+	UPROPERTY()
+		TArray<int> cornerRotationArray;
+	UPROPERTY()
+		FTransform visualTransform;
+	UPROPERTY()
+		FTransform collisionTransform;
+	UPROPERTY()
+		bool alreadyMade = true;
+	UPROPERTY()
+		TArray<bool> fillerCreated;
+	UPROPERTY()
+		bool okForTiles;
+	UPROPERTY()
+		TArray<AC_WallCollision*> tileCollisionActors;
+	UPROPERTY()
+		int xMax;
+	UPROPERTY()
+		int yMax;
+	UPROPERTY()
+		int cornerRot;
+	UPROPERTY()
+		int tileIndex;
+	UPROPERTY()
+		int lastIndex;
+
+
+	// Generate room variables
+	UPROPERTY()
+		float halfX;
+	UPROPERTY()
+		float roomHalf_X;
+	UPROPERTY()
+		float quadRoomBound_Left;
+	UPROPERTY()
+		float quadRoomBound_Right;
+	UPROPERTY()
+		float quadRoomBound_Top;
+	UPROPERTY()
+		float quadRoomBound_Bottom;
+	UPROPERTY()
+		float roomCentre_X;
+	UPROPERTY()
+		float roomCentre_Y;
+	UPROPERTY()
+		float halfX2;
+	UPROPERTY()
+		float halfY;
+	UPROPERTY()
+		float halfY2;
+	UPROPERTY()
+		float roomHalf_2;
+	UPROPERTY()
+		TArray<AC_QuadRooms*> realRoomsArray;
+	UPROPERTY()
+		float tmp;
 };
