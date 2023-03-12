@@ -21,7 +21,7 @@ void ACMPage_ProjectGameModeBase::createDungeon()
 	gridDataRef = GetWorld()->SpawnActor<AC_GridData>(gridDataSubClass, FVector(0.0f, 0.0f, 0.0f), FRotator::ZeroRotator);
 	quadTreeRef = GetWorld()->SpawnActor<AC_SetUpQuadTree > (quadTreeSubClass, FVector(0.0f,0.0f,0.0f), FRotator::ZeroRotator);
 	quadTreeRef->StartSetup();
-	gridDataRef->createGrid(quadTreeRef);
+	//gridDataRef->createGrid(quadTreeRef);
 }
 
 void ACMPage_ProjectGameModeBase::spawnUnits()

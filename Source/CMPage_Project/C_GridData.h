@@ -58,6 +58,24 @@ private:
 		UInstancedStaticMeshComponent* wallMesh;
 	UPROPERTY(VisibleAnywhere)
 		UInstancedStaticMeshComponent* floorMesh;
+	UPROPERTY(EditAnywhere)
+		UStaticMesh* pillarWallMeshInstance;
+	UPROPERTY(EditAnywhere)
+		UStaticMesh* capFIllerMeshInstance;
+	UPROPERTY(EditAnywhere)
+		UStaticMesh* cornerFillerMeshInstance;
+	UPROPERTY(EditAnywhere)
+		UStaticMesh* groundFillerFullMeshInstance;
+	UPROPERTY(EditAnywhere)
+		UStaticMesh* capWallMeshInstance;
+	UPROPERTY(EditAnywhere)
+		UStaticMesh* insideCornerMeshInstance;
+	UPROPERTY(EditAnywhere)
+		UStaticMesh* outsideCornerMeshInstance;
+	UPROPERTY(EditAnywhere)
+		UStaticMesh* wallMeshInstance;
+	UPROPERTY(EditAnywhere)
+		UStaticMesh* floorMeshInstance;
 	//functions
 	UFUNCTION()
 		void digRooms(AC_QuadRooms* quadRoomIn);
@@ -107,7 +125,8 @@ private:
 		FTransform makeTileTransform();
 	UFUNCTION()
 		bool anyTile(int in);
-
+	UPROPERTY()
+		AC_SetUpQuadTree* quadTree;
 	//main Variables
 	UPROPERTY()
 		TArray<int> testArray;
@@ -208,4 +227,44 @@ private:
 		TArray<AC_QuadRooms*> realRoomsArray;
 	UPROPERTY()
 		float tmp;
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<AC_WallCollision> wallColCLass;
+	//dig corridor variables
+	UPROPERTY()
+		AC_QuadRooms* nw_QuadRoom;
+	UPROPERTY()
+		AC_QuadRooms* ne_QuadRoom;
+	UPROPERTY()
+		AC_QuadRooms* sw_QuadRoom;
+	UPROPERTY()
+		AC_QuadRooms* se_QuadRoom;
+	UPROPERTY()
+		TArray<AC_QuadRooms*> connectedOnce;
+
+	// test variables
+	UPROPERTY()
+		int test_n1_0;
+	UPROPERTY()
+		int test_n1_1;
+	UPROPERTY()
+		int test_0_1;
+	UPROPERTY()
+		int test_1_1;
+	UPROPERTY()
+		int test_1_0;
+	UPROPERTY()
+		int test_1_n1;
+	UPROPERTY()
+		int test_0_n1;
+	UPROPERTY()
+		int test_n1_n1;
+	UPROPERTY()
+		int cornerXTest;
+	UPROPERTY()
+		int cornerYTest;
+	UPROPERTY()
+		TArray<int> tileTestOut;
+	UPROPERTY()
+		TArray<FVector> test8Points = {FVector(-1.0f,0.0f,0.0f),FVector(-1.0f,1.0f,0.0f) ,FVector(0.0f,1.0f,0.0f) ,FVector(1.0f,1.0f,0.0f), 
+	FVector(1.0f,-1.0f,0.0f) ,FVector(0.0f,-1.0f,0.0f),FVector(-1.0f,-1.0f,0.0f) };
 };

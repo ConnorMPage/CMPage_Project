@@ -40,13 +40,18 @@ public:
 		void generateQuads(AC_QuadRooms*& quadRoomIn, int mainInt);
 	UFUNCTION()
 		void StartSetup();
+	UPROPERTY()
+		TArray<AC_QuadRooms*> QuadRoomArray;
+	UPROPERTY()
+		TArray<AC_QuadRooms*> justLeafNodes_QuadRoom;
+	UPROPERTY()
+		TArray<AC_QuadRooms*> justTrunkNodes_QuadRoom;
 private:
 	UPROPERTY()
 		AC_QuadRooms* AABB;
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<AC_QuadRooms> quadRoomsSubClass;
-	UPROPERTY()
-		TArray<AC_QuadRooms*> QuadRoomArray;
+	
 	UPROPERTY()
 		int slice_MaxTries = 1000;
 	UPROPERTY()
@@ -61,10 +66,7 @@ private:
 		bool slices = false;
 	UPROPERTY()
 		AC_QuadRooms* currentQuadBounds;
-	UPROPERTY()
-		TArray<AC_QuadRooms*> justLeafNodes_QuadRoom;
-	UPROPERTY()
-		TArray<AC_QuadRooms*> justTrunkNodes_QuadRoom;
+	
 	UPROPERTY()
 		int mainLoopI = 0;
 	//UPROPERTY()
