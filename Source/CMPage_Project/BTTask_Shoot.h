@@ -20,7 +20,7 @@ protected:
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;//executes task
 private:
 	UPROPERTY(VisibleAnywhere)
-		float WeaponDamage = 25.0f;
+		float WeaponDamage = 25.0f;//amound of damage for apply damage
 	UPROPERTY(VisibleAnywhere)
-		FVector AddHeightToTrace = FVector(0.0f, 50.0f, 0.0f);
+		FVector AddHeightToTrace = FVector(0.0f, 10.0f, 0.0f);
 };

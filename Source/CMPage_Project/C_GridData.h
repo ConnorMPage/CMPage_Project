@@ -62,24 +62,7 @@ private:
 		UInstancedStaticMeshComponent* wallMesh;
 	UPROPERTY(VisibleAnywhere)
 		UInstancedStaticMeshComponent* floorMesh;
-	/*UPROPERTY(EditAnywhere)*/
-	/*	UStaticMesh* pillarWallMeshInstance;
-	UPROPERTY(EditAnywhere)
-		UStaticMesh* capFIllerMeshInstance;
-	UPROPERTY(EditAnywhere)
-		UStaticMesh* cornerFillerMeshInstance;
-	UPROPERTY(EditAnywhere)
-		UStaticMesh* groundFillerFullMeshInstance;
-	UPROPERTY(EditAnywhere)
-		UStaticMesh* capWallMeshInstance;
-	UPROPERTY(EditAnywhere)
-		UStaticMesh* insideCornerMeshInstance;
-	UPROPERTY(EditAnywhere)
-		UStaticMesh* outsideCornerMeshInstance;
-	UPROPERTY(EditAnywhere)
-		UStaticMesh* wallMeshInstance;
-	UPROPERTY(EditAnywhere)
-		UStaticMesh* floorMeshInstance;*/
+	
 	//functions
 	UFUNCTION()
 		void digRooms(AC_QuadRooms* quadRoomIn);
@@ -89,8 +72,6 @@ private:
 		bool b_HasChildrenWithRooms(AC_QuadRooms* quadRoomIn);
 	UFUNCTION()
 		bool b_HasChildren(AC_QuadRooms* quadRoomIn);
-	UFUNCTION()
-		AC_QuadRooms* closestRoom(AC_QuadRooms* quadRoomIn);
 	UFUNCTION()
 		void edgeClearing();
 	UFUNCTION()
@@ -274,4 +255,11 @@ private:
 
 	UPROPERTY()
 		FVector originVec = FVector(0.0f, 0.0f, 0.0f);
+
+	UPROPERTY()
+		int zeroInt = 0;
+	UPROPERTY()
+		int zeroFloat = 0.0f;
+	UPROPERTY()
+		int oneFloat = 1.0f;
 };

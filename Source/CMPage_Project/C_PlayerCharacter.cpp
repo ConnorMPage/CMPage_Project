@@ -54,7 +54,7 @@ void AC_PlayerCharacter::BeginPlay()
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATargetPoint::StaticClass(), Waypoints);
 	FVector spawnPos;
 	if (IsPlayer)
-	{
+	{//gets the spawn locations of player and enemies
 		spawnPos = FVector(GameModeRef->SpawnPoints[0]->absCentre_X, GameModeRef->SpawnPoints[0]->absCentre_Y, 0.5f);
 		for (int i = 0; i < Waypoints.Num(); i++)
 		{

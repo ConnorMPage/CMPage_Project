@@ -26,7 +26,7 @@ void AC_QuadRooms::Tick(float DeltaTime)
 }
 
 void AC_QuadRooms::initBounds(float XCentre, float YCentre, float XHalf, float YHalf)
-{
+{//initialises the boundary
 	half_x = XHalf;
 	half_y = YHalf;
 	centre_x = XCentre;
@@ -58,7 +58,7 @@ bool AC_QuadRooms::containsPoint(float X, float Y)
 }
 
 void AC_QuadRooms::BoundaryCorners(FVector& NWOut, FVector& NEOut, FVector& SEOut, FVector& SWOut)
-{
+{//calcualtes the boundaries corners
 	NWOut.X = absCentre_X + half_x;
 	NWOut.Y = absCentre_Y + half_y;
 
@@ -74,7 +74,7 @@ void AC_QuadRooms::BoundaryCorners(FVector& NWOut, FVector& NEOut, FVector& SEOu
 }
 
 void AC_QuadRooms::BoundaryBounds(float& Left, float& Right, float& Top, float& Bottom)
-{
+{//gets the the boundaries extent
 	Left = centre_x - half_x;
 	Right = centre_x + half_x;
 	Top = centre_y + half_y;
