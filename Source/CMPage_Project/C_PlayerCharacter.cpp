@@ -14,7 +14,7 @@ AC_PlayerCharacter::AC_PlayerCharacter()
 	FName fnWeaponSocket = TEXT("Weapon");
 	CharacterWeapon->SetupAttachment(GetMesh(), fnWeaponSocket);//attaches to hand socket
 	CharacterWeapon->SetRelativeLocation(WeaponLocation);
-
+	CharacterWeapon->SetupAttachment(GetMesh(), fnWeaponSocket);
 	//Player Camera Setup
 	CameraSpringArm = CreateDefaultSubobject < USpringArmComponent>(TEXT("Camera SpringArm"));
 	CameraSpringArm->SetupAttachment(FindComponentByClass<USkeletalMeshComponent>());

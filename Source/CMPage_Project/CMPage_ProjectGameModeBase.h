@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "C_SetUpQuadTree.h"
-#include "C_WorldData.h"
 #include "C_GridData.h"
 #include <Engine/TargetPoint.h>
 #include "CMPage_ProjectGameModeBase.generated.h"
@@ -41,8 +40,7 @@ private:
 	
 	UPROPERTY()
 		AC_SetUpQuadTree* quadTreeRef;
-	UPROPERTY()
-		AC_WorldData* worldDataRef;
+	
 	
 	/*UPROPERTY(EditAnywhere)
 		TSubclassOf<AC_PlayerCharacter> enemyClass;*/

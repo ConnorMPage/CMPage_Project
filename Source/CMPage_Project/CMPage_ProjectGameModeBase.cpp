@@ -21,23 +21,7 @@ void ACMPage_ProjectGameModeBase::createDungeon()
 	gridDataRef->createGrid(quadTreeRef);
 }
 
-void ACMPage_ProjectGameModeBase::spawnUnits()
-{
-	for (int i = 0; i < gridDataRef->realRoomsArray.Num(); i++)
-	{
-		//wayPoint->GetWorld()->SpawnActor<ATargetPoint>(FVector(gridDataRef->realRoomsArray[i]->absCentre_X, gridDataRef->realRoomsArray[i]->absCentre_Y, 0.0f), FRotator::ZeroRotator);
-		if (i == 0)
-		{
-			
-		}
-		else
-		{
-			//enemyCharacter->GetWorld()->SpawnActor<AC_PlayerCharacter*>(enemyClass,FVector(gridDataRef->realRoomsArray[i]->absCentre_X, gridDataRef->realRoomsArray[i]->absCentre_Y, 0.0f), FRotator::ZeroRotator);
-			
-		}
-	}
-	
-}
+
 
 void ACMPage_ProjectGameModeBase::StartGame()
 {
