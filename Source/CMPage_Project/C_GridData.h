@@ -27,7 +27,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	UFUNCTION()
-		void passInVariables(FVector mapDim, int tSize, int rwborder, int corW);
+		void passInVariables(FVector mapDim, int tSize, int rwborder, int corW, int roomMin);
 	UFUNCTION()
 		void createGrid(AC_SetUpQuadTree* quadTreeRef);
 	UPROPERTY(VisibleAnywhere)
@@ -38,6 +38,8 @@ public:
 		int roomWallBorder;
 	UPROPERTY(VisibleAnywhere)
 		int corridorWidth;
+	UPROPERTY(VisibleAnywhere)
+		int roomMinSize;
 private:
 	//Meshes 
 	UPROPERTY(VisibleAnywhere)
@@ -58,8 +60,8 @@ private:
 		UInstancedStaticMeshComponent* wallMesh;
 	UPROPERTY(VisibleAnywhere)
 		UInstancedStaticMeshComponent* floorMesh;
-	UPROPERTY(EditAnywhere)
-		UStaticMesh* pillarWallMeshInstance;
+	/*UPROPERTY(EditAnywhere)*/
+	/*	UStaticMesh* pillarWallMeshInstance;
 	UPROPERTY(EditAnywhere)
 		UStaticMesh* capFIllerMeshInstance;
 	UPROPERTY(EditAnywhere)
@@ -75,7 +77,7 @@ private:
 	UPROPERTY(EditAnywhere)
 		UStaticMesh* wallMeshInstance;
 	UPROPERTY(EditAnywhere)
-		UStaticMesh* floorMeshInstance;
+		UStaticMesh* floorMeshInstance;*/
 	//functions
 	UFUNCTION()
 		void digRooms(AC_QuadRooms* quadRoomIn);
@@ -196,7 +198,8 @@ private:
 		int tileIndex;
 	UPROPERTY()
 		int lastIndex;
-
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<AC_QuadRooms>quadRoomsSubClass;
 
 	// Generate room variables
 	UPROPERTY()
@@ -222,7 +225,7 @@ private:
 	UPROPERTY()
 		float halfY2;
 	UPROPERTY()
-		float roomHalf_2;
+		float roomHalf_Y;
 	UPROPERTY()
 		TArray<AC_QuadRooms*> realRoomsArray;
 	UPROPERTY()
@@ -266,5 +269,8 @@ private:
 		TArray<int> tileTestOut;
 	UPROPERTY()
 		TArray<FVector> test8Points = {FVector(-1.0f,0.0f,0.0f),FVector(-1.0f,1.0f,0.0f) ,FVector(0.0f,1.0f,0.0f) ,FVector(1.0f,1.0f,0.0f), 
-	FVector(1.0f,-1.0f,0.0f) ,FVector(0.0f,-1.0f,0.0f),FVector(-1.0f,-1.0f,0.0f) };
+	FVector(1.0f,0.0f,0.0f),FVector(1.0f,-1.0f,0.0f) ,FVector(0.0f,-1.0f,0.0f),FVector(-1.0f,-1.0f,0.0f) };
+
+	UPROPERTY()
+		FVector originVec = FVector(0.0f, 0.0f, 0.0f);
 };

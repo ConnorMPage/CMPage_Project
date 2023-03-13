@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "C_GridData.h"
+#include "Math/UnrealMathUtility.h"
+
 
 // Sets default values
 AC_GridData::AC_GridData()
@@ -11,25 +11,32 @@ AC_GridData::AC_GridData()
 	
 	//Mesh initialisation
 	
-	//capFIllerMesh = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Cap Filler Mesh"));
-	//cornerFillerMesh = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Corner Filler Mesh"));
-	//groundFillerFullMesh = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Ground Filler Full Mesh"));
-	//capWallMesh = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Cap Wall Mesh"));
-	//insideCornerMesh = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Inside Corner Mesh"));
-	//outsideCornerMesh = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Outside Corner Mesh"));
-	//wallMesh = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT(" Wall Mesh"));
-	//floorMesh = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Floor Mesh"));
-	//pillarWallMesh->SetStaticMesh(pillarWallMeshInstance);
-	//capFIllerMesh->SetStaticMesh(capFIllerMeshInstance);
+	capFIllerMesh = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Cap Filler Mesh"));
+	cornerFillerMesh = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Corner Filler Mesh"));
+	groundFillerFullMesh = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Ground Filler Full Mesh"));
+	capWallMesh = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Cap Wall Mesh"));
+	insideCornerMesh = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Inside Corner Mesh"));
+	outsideCornerMesh = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Outside Corner Mesh"));
+	wallMesh = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT(" Wall Mesh"));
+	floorMesh = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Floor Mesh"));
+	pillarWallMesh =  CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("pillar Mesh"));
 
+	capFIllerMesh->SetCullDistances(5000, 6000);
+	cornerFillerMesh->SetCullDistances(5000, 6000);
+	groundFillerFullMesh->SetCullDistances(5000, 6000);
+	capWallMesh->SetCullDistances(5000, 6000);
+	insideCornerMesh->SetCullDistances(5000, 6000);
+	outsideCornerMesh->SetCullDistances(5000, 6000);
+	wallMesh->SetCullDistances(5000, 6000);
+	floorMesh->SetCullDistances(5000, 6000);
+	pillarWallMesh->SetCullDistances(5000, 6000);
 }
 
 // Called when the game starts or when spawned
 void AC_GridData::BeginPlay()
 {
 	Super::BeginPlay();
-	//if (pillarWallMeshInstance != nullptr)pillarWallMesh->SetStaticMesh(pillarWallMeshInstance);
-	//if (capFIllerMeshInstance != nullptr)capFIllerMesh->SetStaticMesh(capFIllerMeshInstance);
+	
 }
 
 // Called every frame
@@ -39,14 +46,28 @@ void AC_GridData::Tick(float DeltaTime)
 
 }
 
-void AC_GridData::passInVariables(FVector mapDim, int tSize, int rwborder, int corW)
+void AC_GridData::passInVariables(FVector mapDim, int tSize, int rwborder, int corW, int roomMin)
 {
-	mapDimensions = mapDim;
+	
 	tileSize = tSize;
+	mapDimensions = mapDim / tileSize;
 	roomWallBorder = rwborder;
 	corridorWidth = corW;
+	roomMinSize = roomMin;
 	
-	
+	int startSize = floor(mapDimensions.X * mapDimensions.Y);
+	tiles.SetNum(startSize);
+	tileType.SetNum(startSize);
+	cornerRotationArray.SetNum(startSize);
+	fillerCreated.SetNum(startSize);
+	tileCollisionActors.SetNum(startSize);
+	for (int i = 0; i < tiles.Num(); i++)
+	{
+		tiles[i] = false;
+		tileType[i] = 0;
+		cornerRotationArray[i] = 1;
+		fillerCreated[i] = false;
+	}
 }
 
 void AC_GridData::createGrid(AC_SetUpQuadTree* quadTreeRef)
@@ -66,8 +87,10 @@ void AC_GridData::createGrid(AC_SetUpQuadTree* quadTreeRef)
 	
 	edgeClearing();
 	generateWalls();
+	
 
-	for (int index = 0; index <= lastIndex; index++)
+
+	for (int index = 0; index < lastIndex; index++)
 	{
 		tileIndex = index;
 		int xAxis, yAxis;
@@ -118,6 +141,7 @@ void AC_GridData::createGrid(AC_SetUpQuadTree* quadTreeRef)
 							if (tileType[tileIndex] != 0)
 							{
 								floorMesh->AddInstance(visualTransform);
+								tiles[tileIndex] = true;
 								// finish off
 							}
 							else
@@ -326,6 +350,7 @@ void AC_GridData::generateWalls()
 		int value;
 		int indexOut;
 		getArrayValueXYin(localXIndex, localYIndex, tileType, indexOut, value);
+	
 		if (value == 0)
 		{
 			testNSEW(localXIndex, localYIndex, tileType, tileO1, tileO2, tileO3, tileO4, tileO5, tileO6, tileO7, tileO8);
@@ -635,10 +660,14 @@ void AC_GridData::testNSEW(int X, int Y, TArray<int> inTestGrid, int& TileOut1, 
 	{
 		x_axis = floor(test8Points[i].X) + X;
 		y_axis = floor(test8Points[i].Y) + Y;
-		getArrayValueXYin(x_axis, y_axis,inTestGrid , indexOut, value);
+		
+
+		y_axis = floor(test8Points[i].Y) + Y;
+
 		if (x_axis < xMax&& y_axis < yMax && x_axis >= 0&& y_axis >= 0)
 		{
 			tileTestOut.Add(value);
+			getArrayValueXYin(x_axis, y_axis, inTestGrid, indexOut, value);
 		}
 		else
 		{
@@ -646,21 +675,21 @@ void AC_GridData::testNSEW(int X, int Y, TArray<int> inTestGrid, int& TileOut1, 
 		}
 	}
 	int index = 0;
-	TileOut1 = tileTestOut[index];
+	TileOut1 = tileTestOut[0];
 	index++;
-	TileOut2 = tileTestOut[index];
+	TileOut2 = tileTestOut[1];
 	index++;
-	TileOut3 = tileTestOut[index];
+	TileOut3 = tileTestOut[2];
 	index++;
-	TileOut4 = tileTestOut[index];
+	TileOut4 = tileTestOut[3];
 	index++;
-	TileOut5 = tileTestOut[index];
+	TileOut5 = tileTestOut[4];
 	index++;
-	TileOut6 = tileTestOut[index];
+	TileOut6 = tileTestOut[5];
 	index++;
-	TileOut7 = tileTestOut[index];
+	TileOut7 = tileTestOut[6];
 	index++;
-	TileOut8 = tileTestOut[index];
+	TileOut8 = tileTestOut[7];
 	
 }
 
@@ -730,7 +759,91 @@ void AC_GridData::getXYBaseOnIndex(int indexin, int XMax, int YMax, int& X, int&
 
 void AC_GridData::GenerateRoomTiles(AC_QuadRooms* quadRoomIn)
 {
+	quadHolding = quadRoomIn;
+	okForTiles = false;
+	if (!quadRoomIn->hasChild)
+	{
+		FVector quadNWC;
+		FVector quadNEC;
+		FVector quadSWC;
+		FVector quadSEC;
+		quadHolding->BoundaryCorners(quadNWC, quadNEC, quadSEC, quadSWC);
+		quadNWC = quadNWC / tileSize;
+		quadSEC = quadSEC / tileSize;
+		quadRoomBound_Right = quadNWC.X;
+		quadRoomBound_Left = quadSEC.X;
+		quadRoomBound_Top = quadNWC.Y;
+		quadRoomBound_Bottom = quadSEC.Y;
 
+
+		for (int index = 0; index <= 14; index++)
+		{
+			//debug
+
+			//
+			roomCentre_X = FMath::RandRange((roomWallBorder+quadRoomBound_Left + (roomMinSize / 2.0f)), (quadRoomBound_Right-(roomMinSize/2.0f))-roomWallBorder);
+			roomCentre_Y = FMath::RandRange((roomWallBorder + quadRoomBound_Bottom + (roomMinSize / 2.0f)), (quadRoomBound_Top - (roomMinSize / 2.0f)) - roomWallBorder);
+
+			halfY = (quadRoomBound_Top-roomCentre_Y) - roomWallBorder;
+			halfY2 = (roomCentre_Y-quadRoomBound_Bottom) - roomWallBorder;
+			halfX = (quadRoomBound_Right - roomCentre_X)-roomWallBorder;
+			halfX2 = (roomCentre_X - quadRoomBound_Left) - roomWallBorder;
+
+			if (halfX2 < halfX)
+			{
+				halfX = halfX2;
+			}
+
+			if (halfX > (roomMaxSize / 2.0f))
+			{
+				halfX = roomMaxSize / 2.0f;
+			}
+
+			roomHalf_X = round(FMath::RandRange(roomMinSize / 2.0f, ceil(halfX)));
+
+			if (halfY2 < halfY) halfY = halfY2;
+			if (halfY > (roomMaxSize / 2.0f)) halfY = roomMaxSize / 2.0f;
+			roomHalf_Y = round(FMath::RandRange(roomMinSize / 2.0f, ceil(halfY)));
+
+			FVector centreVect =( FVector(roomCentre_X, roomCentre_Y, 0.0f) * tileSize);
+			FVector halfVect = (FVector(roomHalf_X, roomHalf_Y, 1.0f) * tileSize);
+			centreVect;
+			halfVect;
+			FVector toRight = quadHolding->GetActorLocation() + quadHolding->BoundingBox->GetUnscaledBoxExtent();
+			FVector toLeft = quadHolding->GetActorLocation() - quadHolding->BoundingBox->GetUnscaledBoxExtent();
+
+			roomHalf_Y = round(FMath::RandRange(roomMinSize / 2.0f, ceil(halfY)));
+			if ( abs(centreVect.X + halfVect.X)   >= toRight.X||
+				abs(centreVect.X - halfVect.X)  <= toLeft.X||
+				abs(centreVect.Y + halfVect.Y) >= toRight.Y || 
+				abs(centreVect.Y - halfVect.Y) <= toLeft.Y)
+			{
+				
+			}
+			else
+			{
+				if ((abs((centreVect.X + halfVect.X) - (centreVect.X - halfVect.X)) >= 400.0f && abs((centreVect.Y + halfVect.Y)-(centreVect.Y - halfVect.Y)) >= 200.0f) ||
+					(abs((centreVect.X + halfVect.X) - (centreVect.X - halfVect.X)) >= 200.0f && abs((centreVect.Y + halfVect.Y) - (centreVect.Y - halfVect.Y)) >= 400.0f))
+				{
+					okForTiles = true;
+					break;
+				}
+			}
+		}
+		if (okForTiles)
+		{
+			AC_QuadRooms* boxComp;
+			FVector spawnPos = FVector(roomCentre_X, roomCentre_Y, 0.0f) * tileSize;
+			FVector spawnHalfPos = FVector(roomHalf_X, roomHalf_Y, 1.0f) * tileSize;
+
+			boxComp = GetWorld()->SpawnActor<AC_QuadRooms>(quadRoomsSubClass, spawnPos, FRotator::ZeroRotator);
+			boxComp->initBounds(spawnPos.X, spawnPos.Y, spawnHalfPos.X, spawnHalfPos.Y);
+
+			digRooms(boxComp);
+			quadHolding->RealRoom = boxComp;
+			realRoomsArray.Add(boxComp);
+		}
+	}
 }
 
 void AC_GridData::generateCorridorTiles(AC_QuadRooms* quadRoomIn, TArray<AC_QuadRooms*> LeafQuadRoom)
@@ -740,9 +853,11 @@ void AC_GridData::generateCorridorTiles(AC_QuadRooms* quadRoomIn, TArray<AC_Quad
 	if (quadRoomIn->childBoundaries.Num() > 0)
 	{
 		nw_QuadRoom = quadHolding->childBoundaries[0];
-		ne_QuadRoom = quadHolding->childBoundaries[1];
-		sw_QuadRoom = quadHolding->childBoundaries[2];
-		se_QuadRoom = quadHolding->childBoundaries[3];
+
+		if (quadRoomIn->childBoundaries.Num() > 1)ne_QuadRoom = quadHolding->childBoundaries[1];
+		if (quadRoomIn->childBoundaries.Num() > 2)sw_QuadRoom = quadHolding->childBoundaries[2];
+		if(quadRoomIn->childBoundaries.Num() > 3) se_QuadRoom = quadHolding->childBoundaries[3];
+		
 	}
 	if (ne_QuadRoom != nullptr)ne_QuadRoom = ne_QuadRoom->RealRoom;
 	if (nw_QuadRoom != nullptr)nw_QuadRoom = nw_QuadRoom->RealRoom;
@@ -751,10 +866,14 @@ void AC_GridData::generateCorridorTiles(AC_QuadRooms* quadRoomIn, TArray<AC_Quad
 
 	if (b_HasChildrenWithRooms(quadHolding))
 	{
-		FVector neCentre = ne_QuadRoom->GetActorLocation() / tileSize;
-		FVector nwCentre = nw_QuadRoom->GetActorLocation() / tileSize;
-		FVector seCentre = se_QuadRoom->GetActorLocation() / tileSize;
-		FVector swCentre = sw_QuadRoom->GetActorLocation() / tileSize;
+		FVector neCentre = originVec;
+		FVector nwCentre = originVec;
+		FVector seCentre = originVec;
+		FVector swCentre = originVec;
+		if (ne_QuadRoom != nullptr)neCentre = ne_QuadRoom->GetActorLocation() / tileSize;
+		if (nw_QuadRoom != nullptr)nwCentre = nw_QuadRoom->GetActorLocation() / tileSize;
+		if (se_QuadRoom != nullptr)seCentre = se_QuadRoom->GetActorLocation() / tileSize;
+		if (sw_QuadRoom != nullptr)swCentre = sw_QuadRoom->GetActorLocation() / tileSize;
 
 		if (ne_QuadRoom != nullptr && nw_QuadRoom != nullptr)
 		{
@@ -806,7 +925,8 @@ void AC_GridData::generateCorridorTiles(AC_QuadRooms* quadRoomIn, TArray<AC_Quad
 				}
 			}
 		}
-		FVector holdingCentre = quadHolding->RealRoom->GetActorLocation() / tileSize;
+		FVector holdingCentre = originVec;
+		if(quadHolding->RealRoom!= nullptr)quadHolding->RealRoom->GetActorLocation() / tileSize;
 		FVector closestCentre = closestReturn->GetActorLocation() / tileSize;
 		bool isComplete = digCorridor(closestCentre, holdingCentre);
 		connectedOnce.AddUnique(quadHolding->RealRoom);
@@ -815,51 +935,30 @@ void AC_GridData::generateCorridorTiles(AC_QuadRooms* quadRoomIn, TArray<AC_Quad
 
 bool AC_GridData::floorOrCorridor(int in)
 {
-	bool if1;
-	bool if2;
-	
-	if (in == 1)if1 = true;
-	else if1 = false;
-	
-	if (in == 2)if2 = true;
-	else if2 = false;
-	
-	bool result = if1 || if2;
+
+	bool result;
+	if (in == 1 || in == 2) result = true;
+	else result = false;
 	
 	return result;
 }
 
 bool AC_GridData::emptyorOutside(int in)
 {
-	bool if1;
-	bool if2;
-
-	if (in == 0)if1 = true;
-	else if1 = false;
-
-	if (in == 666)if2 = true;
-	else if2 = false;
-
-	bool result = if1 || if2;
+	
+	bool result;
+	if (in == 0 || in == 666) result = true;
+	else result = false;
 
 	return result;
 }
 
 bool AC_GridData::wallOrEmptyOrOutside(int in)
 {
-	bool if1;
-	bool if2;
-	bool if3;
-	if (in == 0)if1 = true;
-	else if1 = false;
-
-	if (in == 666)if2 = true;
-	else if2 = false;
-
-	if (in == 99)if3 = true;
-	else if3 = false;
-
-	bool result = if1 || if2 || if3;
+	
+	bool result;
+	if (in == 0 || in == 666 || in == 99) result = true;
+	else result = false;
 
 	return result;
 }

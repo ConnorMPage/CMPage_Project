@@ -27,9 +27,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	UPROPERTY(EditAnywhere)
-		FVector mapDimensions = FVector(32.0f, 32.0f, 1.0f);
+		FVector mapDimensions = FVector(64.0f, 64.0f, 1.0f);
 	UPROPERTY(EditAnywhere)
-		int sliceRoomMinSize = 1;
+		int sliceRoomMinSize = 7;
 	UPROPERTY(EditAnywhere)
 		int tileSize = 100;
 	UPROPERTY(EditAnywhere)
