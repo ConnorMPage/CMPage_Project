@@ -38,6 +38,10 @@ public:
 		float centre_x;
 	UPROPERTY()
 		float centre_y;
+	UPROPERTY(VisibleAnywhere)
+		float absCentre_X;
+	UPROPERTY(VisibleAnywhere)
+		float absCentre_Y;
 	UPROPERTY()
 		float half_x;
 	UPROPERTY()

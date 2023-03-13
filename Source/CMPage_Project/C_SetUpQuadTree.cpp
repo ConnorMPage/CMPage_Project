@@ -136,6 +136,8 @@ void AC_SetUpQuadTree::generateQuads(AC_QuadRooms*& quadRoomIn,int mainInt )
 							tempQuad->K2_AttachRootComponentToActor(quadRoomIn);
 							
 						}
+						tempQuad->absCentre_X = tempQuad->GetActorLocation().X;
+						tempQuad->absCentre_Y = tempQuad->GetActorLocation().Y;
 						tempQuad->posDif = tempQuad->GetActorLocation() - quadRoomIn->GetActorLocation();
 						quadRoomIn->childBoundaries.Add(quadRoomIn);
 					}

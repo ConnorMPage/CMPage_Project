@@ -40,6 +40,8 @@ public:
 		int corridorWidth;
 	UPROPERTY(VisibleAnywhere)
 		int roomMinSize;
+	UPROPERTY()
+		TArray<AC_QuadRooms*> realRoomsArray;
 private:
 	//Meshes 
 	UPROPERTY(VisibleAnywhere)
@@ -226,8 +228,7 @@ private:
 		float halfY2;
 	UPROPERTY()
 		float roomHalf_Y;
-	UPROPERTY()
-		TArray<AC_QuadRooms*> realRoomsArray;
+	
 	UPROPERTY()
 		float tmp;
 	UPROPERTY(EditAnywhere)

@@ -59,14 +59,14 @@ bool AC_QuadRooms::containsPoint(float X, float Y)
 
 void AC_QuadRooms::BoundaryCorners(FVector& NWOut, FVector& NEOut, FVector& SEOut, FVector& SWOut)
 {
-	NWOut.X = centre_x + half_x;
-	NWOut.Y = centre_y + half_y;
+	NWOut.X = absCentre_X + half_x;
+	NWOut.Y = absCentre_Y + half_y;
 
-	NEOut.X = centre_x - half_x;
+	NEOut.X = absCentre_X - half_x;
 	NEOut.Y = NWOut.Y;
 
 	SEOut.X = NEOut.X;
-	SEOut.Y = centre_y - half_y;
+	SEOut.Y = absCentre_Y - half_y;
 
 	SWOut.X = NWOut.X;
 	SWOut.Y = SEOut.Y;

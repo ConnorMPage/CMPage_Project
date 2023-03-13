@@ -182,9 +182,9 @@ void AC_GridData::digRooms(AC_QuadRooms* quadRoomIn)
 	}
 	int indexOut;
 	bool value;
-	for (int y = floor(quadRoomBound_Bottom / tileSize); y > (floor(quadRoomBound_Top / tileSize) - 1); y++)
+	for (int y = floor(quadRoomBound_Bottom / tileSize); y < (floor(quadRoomBound_Top / tileSize) - 1); y++)
 	{
-		for (int x = floor(quadRoomBound_Left / tileSize); x > (floor(quadRoomBound_Right / tileSize) - 1); x++)
+		for (int x = floor(quadRoomBound_Left / tileSize); x < (floor(quadRoomBound_Right / tileSize) - 1); x++)
 		{
 			getArrayValueXYinbool(x, y, tiles, indexOut,value);
 			tiles[indexOut] = true;
@@ -205,9 +205,9 @@ bool AC_GridData::digCorridor(FVector room1Centre, FVector room2Centre)
 	bool value;
 	if (row1 <= row2)
 	{
-		for (int x = col1; x >(col1+corridorWidth);x++)
+		for (int x = col1; x <(col1+corridorWidth);x++)
 		{
-			for (int y = row1; y > (row2 +0) ;y++)
+			for (int y = row1; y < (row2 +0) ;y++)
 			{
 				getArrayValueXYinbool(x, y, tiles, indexOut, value);
 				if (tileType[indexOut] != 1)
@@ -220,9 +220,9 @@ bool AC_GridData::digCorridor(FVector room1Centre, FVector room2Centre)
 	}
 	else
 	{
-		for (int x = col1; x > (col1 + corridorWidth); x++)
+		for (int x = col1; x < (col1 + corridorWidth); x++)
 		{
-			for (int y = row2; y > (row1 + 0); y++)
+			for (int y = row2; y < (row1 + 0); y++)
 			{
 				getArrayValueXYinbool(x, y, tiles, indexOut, value);
 				if (tileType[indexOut] != 1)
@@ -236,9 +236,9 @@ bool AC_GridData::digCorridor(FVector room1Centre, FVector room2Centre)
 	
 	if (col1 <= col2)
 	{
-		for (int y = row2; y > (row2 + corridorWidth); y++)
+		for (int y = row2; y < (row2 + corridorWidth); y++)
 		{
-			for (int x = col1; x > col2; x++)
+			for (int x = col1; x < col2; x++)
 			{
 				getArrayValueXYinbool(x, y, tiles, indexOut, value);
 				if (tileType[indexOut] != 1)
@@ -251,9 +251,9 @@ bool AC_GridData::digCorridor(FVector room1Centre, FVector room2Centre)
 	}
 	else
 	{
-		for (int y = row2; y > (row2 + corridorWidth); y++)
+		for (int y = row2; y < (row2 + corridorWidth); y++)
 		{
-			for (int x = col2; x > col1; x++)
+			for (int x = col2; x < col1; x++)
 			{
 				getArrayValueXYinbool(x, y, tiles, indexOut, value);
 				if (tileType[indexOut] != 1)
@@ -379,7 +379,7 @@ void AC_GridData::generateWalls()
 				getArrayValueXYin(localXIndex, localYIndex, testArray, value, indexOut);
 				tileType[indexOut] = 99;
 				cornerRotationArray[indexOut] = cornerRot;
-				makeDoubleWall(makeTileTransform());
+				makeWall(makeTileTransform());
 			}
 			else
 			{
@@ -389,7 +389,7 @@ void AC_GridData::generateWalls()
 					getArrayValueXYin(localXIndex, localYIndex, testArray, value, indexOut);
 					tileType[indexOut] = 99;
 					cornerRotationArray[indexOut] = cornerRot;
-					makeDoubleWall(makeTileTransform()); 
+					makeWall(makeTileTransform());
 				}
 				else
 				{
@@ -399,7 +399,7 @@ void AC_GridData::generateWalls()
 						getArrayValueXYin(localXIndex, localYIndex, testArray, value, indexOut);
 						tileType[indexOut] = 99;
 						cornerRotationArray[indexOut] = cornerRot;
-						makeDoubleWall(makeTileTransform());
+						makeWall(makeTileTransform());
 					}
 					else
 					{
@@ -409,7 +409,7 @@ void AC_GridData::generateWalls()
 							getArrayValueXYin(localXIndex, localYIndex, testArray, value, indexOut);
 							tileType[indexOut] = 99;
 							cornerRotationArray[indexOut] = cornerRot;
-							makeDoubleWall(makeTileTransform());
+							makeWall(makeTileTransform());
 						}
 						else
 						{
@@ -493,7 +493,7 @@ void AC_GridData::generateWalls()
 														}
 														else
 														{
-															if (floorOrCorridor(test_0_1 )&&floorOrCorridor(test_1_0)&& floorOrCorridor(test_0_n1)&&test_n1_0)
+															if (floorOrCorridor(test_0_1 )&&floorOrCorridor(test_1_0)&& floorOrCorridor(test_0_n1)&&test_n1_0==99)
 															{
 																cornerRot = 3;
 																getArrayValueXYin(localXIndex, localYIndex, testArray, value, indexOut);
@@ -503,7 +503,7 @@ void AC_GridData::generateWalls()
 															}
 															else
 															{
-																if (floorOrCorridor(test_n1_0) && floorOrCorridor(test_1_0) && floorOrCorridor(test_0_n1) && test_0_1)
+																if (floorOrCorridor(test_n1_0) && floorOrCorridor(test_1_0) && floorOrCorridor(test_0_n1) && test_0_1==99)
 																{
 																	cornerRot = 2;
 																	getArrayValueXYin(localXIndex, localYIndex, testArray, value, indexOut);
@@ -513,7 +513,7 @@ void AC_GridData::generateWalls()
 																}
 																else
 																{
-																	if (floorOrCorridor(test_n1_0) && floorOrCorridor(test_0_1) && floorOrCorridor(test_0_n1) && test_1_0)
+																	if (floorOrCorridor(test_n1_0) && floorOrCorridor(test_0_1) && floorOrCorridor(test_0_n1) && test_1_0 ==99)
 																	{
 																		cornerRot = 1;
 																		getArrayValueXYin(localXIndex, localYIndex, testArray, value, indexOut);
@@ -523,7 +523,7 @@ void AC_GridData::generateWalls()
 																	}
 																	else
 																	{
-																		if (floorOrCorridor(test_n1_0) && floorOrCorridor(test_0_1) && floorOrCorridor(test_1_0) && test_0_n1)
+																		if (floorOrCorridor(test_n1_0) && floorOrCorridor(test_0_1) && floorOrCorridor(test_1_0) && test_0_n1 == 99)
 																		{
 																			cornerRot = 0;
 																			getArrayValueXYin(localXIndex, localYIndex, testArray, value, indexOut);
@@ -666,8 +666,9 @@ void AC_GridData::testNSEW(int X, int Y, TArray<int> inTestGrid, int& TileOut1, 
 
 		if (x_axis < xMax&& y_axis < yMax && x_axis >= 0&& y_axis >= 0)
 		{
-			tileTestOut.Add(value);
 			getArrayValueXYin(x_axis, y_axis, inTestGrid, indexOut, value);
+			tileTestOut.Add(value);
+			
 		}
 		else
 		{
@@ -812,7 +813,7 @@ void AC_GridData::GenerateRoomTiles(AC_QuadRooms* quadRoomIn)
 			FVector toRight = quadHolding->GetActorLocation() + quadHolding->BoundingBox->GetUnscaledBoxExtent();
 			FVector toLeft = quadHolding->GetActorLocation() - quadHolding->BoundingBox->GetUnscaledBoxExtent();
 
-			roomHalf_Y = round(FMath::RandRange(roomMinSize / 2.0f, ceil(halfY)));
+			
 			if ( abs(centreVect.X + halfVect.X)   >= toRight.X||
 				abs(centreVect.X - halfVect.X)  <= toLeft.X||
 				abs(centreVect.Y + halfVect.Y) >= toRight.Y || 
@@ -838,7 +839,8 @@ void AC_GridData::GenerateRoomTiles(AC_QuadRooms* quadRoomIn)
 
 			boxComp = GetWorld()->SpawnActor<AC_QuadRooms>(quadRoomsSubClass, spawnPos, FRotator::ZeroRotator);
 			boxComp->initBounds(spawnPos.X, spawnPos.Y, spawnHalfPos.X, spawnHalfPos.Y);
-
+			boxComp->absCentre_X = boxComp->GetActorLocation().X;
+			boxComp->absCentre_Y = boxComp->GetActorLocation().Y;
 			digRooms(boxComp);
 			quadHolding->RealRoom = boxComp;
 			realRoomsArray.Add(boxComp);
@@ -926,7 +928,7 @@ void AC_GridData::generateCorridorTiles(AC_QuadRooms* quadRoomIn, TArray<AC_Quad
 			}
 		}
 		FVector holdingCentre = originVec;
-		if(quadHolding->RealRoom!= nullptr)quadHolding->RealRoom->GetActorLocation() / tileSize;
+		if(quadHolding->RealRoom!= nullptr)holdingCentre = quadHolding->RealRoom->GetActorLocation() / tileSize;
 		FVector closestCentre = closestReturn->GetActorLocation() / tileSize;
 		bool isComplete = digCorridor(closestCentre, holdingCentre);
 		connectedOnce.AddUnique(quadHolding->RealRoom);
@@ -972,7 +974,7 @@ FTransform AC_GridData::makeTileTransform()
 	getXYBaseOnIndex(tileIndex, xMax, yMax, x, y);
 	float fX = x;
 	float fY = y;
-	FVector translation = FVector(fX, fY, 0.0f);
+	FVector translation = (FVector(fX, fY, 0.0f)+ originVec)*tileSize;
 	return FTransform(rotation,translation,FVector(1.0f,1.0f,1.0f));
 }
 

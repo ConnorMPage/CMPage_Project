@@ -31,7 +31,7 @@ private:
 	UFUNCTION()
 		AActor* ChooseWaypoint();//choses a waypoint at random
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(EditAnywhere)
 		UBehaviorTree* EnemyMovementTree;// attaches the behavior tree to controller
 
 	UFUNCTION()
