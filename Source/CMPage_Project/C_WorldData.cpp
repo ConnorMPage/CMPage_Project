@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
+#include "C_QuadRooms.h"
 #include "C_WorldData.h"
 
 // Sets default values
@@ -22,6 +22,11 @@ void AC_WorldData::BeginPlay()
 void AC_WorldData::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+}
 
+void AC_WorldData::SpawnUnits()
+{
+	
 }
 

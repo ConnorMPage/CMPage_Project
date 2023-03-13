@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/SceneCaptureComponent2D.h"
+#include "Engine/TargetPoint.h"
 #include "CMPage_ProjectGameModeBase.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -122,6 +123,8 @@ private:
 	
 	UPROPERTY(VisibleAnywhere)
 		ACMPage_ProjectGameModeBase* GameModeRef;// creates reference to the gamemode
+	UPROPERTY(EditAnywhere)
+		TArray<AActor*> Waypoints;//create waypoint array
 	//to update hud
 	UPROPERTY(VisibleAnywhere)
 		int ShotFired = 1;

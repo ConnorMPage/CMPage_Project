@@ -37,6 +37,8 @@ AC_PlayerCharacter::AC_PlayerCharacter()
 	MapArm->SetRelativeLocation(MapArmLocation);
 	MapArm->SetRelativeRotation(MapArmRotation);
 	MapArm->TargetArmLength = MapArmLength;
+	
+	
 }
 
 // Called when the game starts or when spawned
@@ -49,6 +51,27 @@ void AC_PlayerCharacter::BeginPlay()
 	}
 	AmountOfBulletsInMag = MaxMagCapacity;//sets the amount of bullets in mag
 	GameModeRef = Cast<ACMPage_ProjectGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATargetPoint::StaticClass(), Waypoints);
+	FVector spawnPos;
+	if (IsPlayer)
+	{
+		spawnPos = FVector(GameModeRef->SpawnPoints[0]->absCentre_X, GameModeRef->SpawnPoints[0]->absCentre_Y, 0.5f);
+		for (int i = 0; i < Waypoints.Num(); i++)
+		{
+			int index = round(FMath::RandRange(1, GameModeRef->SpawnPoints.Num() - 1));
+			spawnPos = FVector(GameModeRef->SpawnPoints[index]->absCentre_X, GameModeRef->SpawnPoints[index]->absCentre_Y, 0.5f);
+			Waypoints[i]->SetActorLocation(spawnPos);
+		}
+		
+	}
+	else 
+	{
+		int index = round(FMath::RandRange(1, GameModeRef->SpawnPoints.Num() - 1));
+		spawnPos = FVector(GameModeRef->SpawnPoints[index]->absCentre_X, GameModeRef->SpawnPoints[index]->absCentre_Y, 0.5f);
+	}
+	
+	this->SetActorLocation(spawnPos);
+	
 }
 
 // Called every frame
@@ -237,19 +260,19 @@ float AC_PlayerCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dam
 {
 	if (PlayerHealth <= NoHealth)//if health is empty
 	{
-
+		Destroy();
 		IsDead = true;//sets target to dead
 		UE_LOG(LogTemp, Warning, TEXT("dead"));
 		if (IsPlayer == false)//if its ai
 		{
 			UE_LOG(LogTemp, Warning, TEXT("enemy"));
-			Destroy();
+			
 			GameModeRef->EnemyKilled();//executes a gamemode funtion
 		}
 		else//if player
 		{
 			GameModeRef->GameOver();//ends the game
-			Destroy();
+			
 		}
 
 	}

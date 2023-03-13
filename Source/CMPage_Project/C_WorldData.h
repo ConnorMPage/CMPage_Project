@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "C_PlayerCharacter.h"
+#include "CMPage_ProjectGameModeBase.h"
 #include "GameFramework/Actor.h"
 #include "C_WorldData.generated.h"
 
@@ -23,5 +24,15 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
+private:
+	UPROPERTY()
+		AC_PlayerCharacter* enemyRef;
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<AC_PlayerCharacter> enemyClass;
+	UPROPERTY()
+		ACMPage_ProjectGameModeBase* gameModeRef;
+	UPROPERTY()
+		int loopStart = 0;
+	UFUNCTION()
+		void SpawnUnits();
 };

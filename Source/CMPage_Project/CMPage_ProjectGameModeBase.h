@@ -6,7 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "C_SetUpQuadTree.h"
 #include "C_GridData.h"
-#include <Engine/TargetPoint.h>
+#include "C_QuadRooms.h"
 #include "CMPage_ProjectGameModeBase.generated.h"
 
 
@@ -25,8 +25,7 @@ protected:
 private:
 	UFUNCTION()
 		void createDungeon();
-	UFUNCTION()
-		void spawnUnits();
+
 	UFUNCTION()
 		void StartGame();//starts the start timer function
 	UFUNCTION()
@@ -40,10 +39,6 @@ private:
 	
 	UPROPERTY()
 		AC_SetUpQuadTree* quadTreeRef;
-	
-	
-	/*UPROPERTY(EditAnywhere)
-		TSubclassOf<AC_PlayerCharacter> enemyClass;*/
 	UPROPERTY()
 		AC_GridData* gridDataRef;
 	UPROPERTY(EditAnywhere)
@@ -51,7 +46,7 @@ private:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<AC_GridData> gridDataSubClass;
 	UPROPERTY()
-		int EnemiesAlive =1;//starting amount of enemies
+		int EnemiesAlive = 10;//starting amount of enemies
 	UPROPERTY(EditAnywhere)
 		float GameLength = 900.0f;//15 minute timer
 	UPROPERTY(EditAnywhere)
@@ -93,4 +88,9 @@ public:
 		void GameOver();//ends the game
 	UFUNCTION()
 		void EnemyKilled();//if an enemy is killed
+	UPROPERTY()
+		bool SpawnTheUnits = false;
+	UPROPERTY()
+		TArray<AC_QuadRooms*> SpawnPoints;
+	
 }; 

@@ -9,7 +9,6 @@ void ACMPage_ProjectGameModeBase::BeginPlay()
 	Super::BeginPlay();
 	
 	createDungeon();
-	spawnUnits();
 	StartGame();
 }
 void ACMPage_ProjectGameModeBase::createDungeon()
@@ -19,6 +18,9 @@ void ACMPage_ProjectGameModeBase::createDungeon()
 	quadTreeRef->StartSetup();
 	gridDataRef->passInVariables(quadTreeRef->mapDimensions, quadTreeRef->tileSize, quadTreeRef->roomWallBorder, 1, quadTreeRef->sliceRoomMinSize);
 	gridDataRef->createGrid(quadTreeRef);
+
+	SpawnPoints = gridDataRef->realRoomsArray;
+	SpawnTheUnits = true;
 }
 
 
